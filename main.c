@@ -55,6 +55,18 @@ int main(void)
     weights[3].mass = sqrt(pow(xTotal,2) + pow(yTotal,2));
     weights[3].theta = 1/tanf(xTotal/xTotal) * -(PI/180);
     
+    if(xTotal > 0){
+        if(yTotal < 0){
+            weights[3].theta = weights[3].theta + 360.0;
+        }
+    } else {
+        weights[3].theta = weights[3].theta + 180.0;
+    }
+    
+    
+    
+    
+    
     
     /*float masses[4] = {};
     scanf("%f", &masses[0]);
