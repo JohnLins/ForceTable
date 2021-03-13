@@ -15,7 +15,6 @@ int main(void)
 {
     const int screenWidth = 1000;
     const int screenHeight = 1000;
-    float x = 0.0f;
     
     Weight weights[4] = {};
     /*for(int i = 0; i < 4; i++){
@@ -26,13 +25,13 @@ int main(void)
     }*/
     
     weights[0].mass = 50;
-    weights[1].mass = 10;
-    weights[2].mass = 50;
+    weights[1].mass = 100;
+    weights[2].mass = 30;
     //weights[3].mass = 80;
     
     weights[0].theta = 10 * -(PI/180);
-    weights[1].theta = 80 * -(PI/180);
-    weights[2].theta = 190 * -(PI/180);
+    weights[1].theta = 90 * -(PI/180);
+    weights[2].theta = 380 * -(PI/180);
     //weights[3].theta = 290 * -(PI/180);
     
     
@@ -40,9 +39,10 @@ int main(void)
     float yTotal = 0.0;
     for(int i = 0; i < 3; i++)
     {
-        xTotal += weights[i].mass * cosf(weights[i].theta);
-        yTotal += weights[i].mass * sinf(weights[i].theta);
+        xTotal += weights[i].mass * cosf(weights[i].theta * (180/PI));
+        yTotal += weights[i].mass * sinf(weights[i].theta * (180/PI));
     }     
+    //yTotal = -yTotal;
 
         
     printf("R_x: %f \n", xTotal);
@@ -50,10 +50,10 @@ int main(void)
     
     
     printf("R mass: %f \n", sqrt(pow(xTotal,2) + pow(yTotal,2)));
-    printf("R theta - : %f \n", 1/tanf(xTotal/xTotal) );
+    printf("R theta - : %f \n", 1/tanf(xTotal/xTotal) * (180/PI) );
     
     weights[3].mass = sqrt(pow(xTotal,2) + pow(yTotal,2));
-    weights[3].theta = 1/tanf(xTotal/xTotal) * -(PI/180);
+    weights[3].theta = (1/tanf(yTotal/xTotal)) * -(180/PI);
     
     if(xTotal > 0){
         if(yTotal < 0){
@@ -63,6 +63,15 @@ int main(void)
         weights[3].theta = weights[3].theta + 180.0;
     }
     
+    /*float Rec2Polar(float x, float y){
+        
+        
+    }
+    
+    float polar2Rec(float radius, float theta){
+        
+    }
+    */
     
     
     
@@ -89,7 +98,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Force Table");
 
-    Vector2 agentPos = { screenWidth/2 + 4, screenHeight/2 + 4};
+    Vector2 agentPos = { screenWidth/2, screenHeight/2 };
 
 
     SetTargetFPS(60);  
@@ -109,7 +118,7 @@ int main(void)
                 //R * sinf(theta)
 
             
-                x++;
+                
                 if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
                 agentPos = GetMousePosition();
                 }
@@ -133,14 +142,32 @@ int main(void)
                     char thetaDisplay[30];
                     char massDisplay[30];
                     
-                    sprintf(thetaDisplay, "%f", weights[i].theta);
+                    sprintf(thetaDisplay, "%f", weights[i].theta * -(180/PI));
                     sprintf(massDisplay, "%f", weights[i].mass);
                
                     DrawCircleV((Vector2){ R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2}, weights[i].mass, BLACK);
+                    //DrawCircleLines(R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2, weights[i].mass, BLUE);
                     //DrawCircleV((Vector2){ R*cosf(weights[2].theta), R*sinf(weights[2].theta)}, weights[2].mass, BLACK);
-                    DrawText(massDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 - 40), 20, RED);
+                    DrawText(thetaDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 - 40), 20, RED);
+                    DrawText(massDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 + 40), 20, BLUE);
                     
                 }
+                
+                if(agentPos.x > screenWidth/2){
+                    agentPos.x -= 0.6;
+                }
+                if(agentPos.x < screenWidth/2){
+                    agentPos.x += 0.6;
+                }
+                
+                if(agentPos.y > screenHeight/2){
+                    agentPos.y -= 0.6;
+                }
+                
+                if(agentPos.y < screenHeight/2){
+                    agentPos.y += 0.6;
+                }
+                
                 
                 /*
                 DrawCircleV((Vector2){ screenWidth/2, 0}, masses[0], BLACK);
