@@ -97,6 +97,8 @@ int main(void)
     {
         
         
+        
+        
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
@@ -108,8 +110,9 @@ int main(void)
 
             
                 x++;
-                agentPos.x = screenWidth/2 + 20;
-                agentPos.y = screenHeight/2 + 20;
+                if(IsMouseButtonDown(MOUSE_LEFT_BUTTON)){
+                agentPos = GetMousePosition();
+                }
                 
             
             
@@ -127,8 +130,16 @@ int main(void)
                 DrawCircleV(agentPos, 50, BLUE);
                 
                 for(int i = 0; i < 4; i++){
+                    char thetaDisplay[30];
+                    char massDisplay[30];
+                    
+                    sprintf(thetaDisplay, "%f", weights[i].theta);
+                    sprintf(massDisplay, "%f", weights[i].mass);
+               
                     DrawCircleV((Vector2){ R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2}, weights[i].mass, BLACK);
                     //DrawCircleV((Vector2){ R*cosf(weights[2].theta), R*sinf(weights[2].theta)}, weights[2].mass, BLACK);
+                    DrawText(massDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 - 40), 20, RED);
+                    
                 }
                 
                 /*
