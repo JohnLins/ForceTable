@@ -75,6 +75,19 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "Force Table");
 
     Vector2 agentPos = { screenWidth/2, screenHeight/2 };
+    
+    
+    //sizeRatio
+    float largestWeight = 0;
+    
+    for(int i = 0; i < 4; i++){
+        if(weights[i].mass > largestWeight){
+            largestWeight = weights[i].mass;
+        }
+    }
+    
+    
+    float sizeRatio = (largestWeight / 60);
 
 
     SetTargetFPS(60);  
@@ -108,6 +121,8 @@ int main(void)
                
                 DrawCircleV(agentPos, 50, BLUE);
                 
+                DrawCircleV((Vector2){ R*cosf(weights[3].theta) + screenWidth/2, R*sinf(weights[3].theta) + screenHeight/2}, weights[3].mass/sizeRatio, PURPLE);
+               
                 for(int i = 0; i < 4; i++){
                     char thetaDisplay[30];
                     char massDisplay[30];
@@ -118,29 +133,36 @@ int main(void)
                     strcat(thetaDisplay, " Degrees ");
                     strcat(massDisplay, " Grams ");
                
-                    
-                    DrawCircleV((Vector2){ R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2}, weights[i].mass, BLACK);
-                    
+                    if(i != 3){
+                        DrawCircleV((Vector2){ R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2}, weights[i].mass/sizeRatio, BLACK);
+                    }
                     DrawText(thetaDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 - 40), 20, RED);
                     DrawText(massDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 + 40), 20, BLUE);
                     
                 }
+                
+                
                
+                if(agentPos.x != screenWidth/2 || agentPos.y != screenHeight/2){
+                    
+                    if(agentPos.x > screenWidth/2){
+                        agentPos.x -= 1;
+                    }
+                    if(agentPos.x < screenWidth/2){
+                        agentPos.x += 1;
+                    }
+                    
+                    if(agentPos.y > screenHeight/2){
+                        agentPos.y -= 1;
+                    }
+                    
+                    if(agentPos.y < screenHeight/2){
+                        agentPos.y += 1;
+                    }
+                        
+                }
                 
-                if(agentPos.x > screenWidth/2){
-                    agentPos.x -= 0.6;
-                }
-                if(agentPos.x < screenWidth/2){
-                    agentPos.x += 0.6;
-                }
                 
-                if(agentPos.y > screenHeight/2){
-                    agentPos.y -= 0.6;
-                }
-                
-                if(agentPos.y < screenHeight/2){
-                    agentPos.y += 0.6;
-                }
                  
         DrawText("Up key to update values", 10, screenHeight - 60, 20, BLACK);
             
