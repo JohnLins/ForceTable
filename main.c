@@ -4,7 +4,12 @@
 #include <string.h>
 
 #define R 400
-
+/*
+float motion(float m, float a, float b, float w, float x){
+    //return (*a)*exp((-1*(*b)*(*x))/(2*(*m)))   *  cosf(sqrt( pow((2*PI)/(*a), 2) - pow((*b)/(4*(*m)), 2) ) * (*x));
+    return (a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x));
+} //a is equal to the displaced radius
+*/
 
 typedef struct Weight {
     float mass;
@@ -89,6 +94,8 @@ int main(void)
     
     float sizeRatio = (largestWeight / 60);
 
+    float durationDisplaced = 0.0;
+    float offRadius = 0.0;
 
     SetTargetFPS(60);  
     while (!WindowShouldClose())    
@@ -144,23 +151,76 @@ int main(void)
                 
                
                 if(agentPos.x != screenWidth/2 || agentPos.y != screenHeight/2){
+                     float offAngle = atanf( (agentPos.y - screenHeight/2) / (agentPos.x - screenWidth/2) );
+                    
+                   
+                        if(agentPos.x > screenWidth/2){
+                            agentPos.x -= fabs(1 * cosf(offAngle));
+                        }
+                        if(agentPos.x < screenWidth/2){
+                            agentPos.x += fabs(1 * cosf(offAngle));
+                        }
+                        
+                        if(agentPos.y > screenHeight/2){
+                            agentPos.y -= fabs(1 * sinf(offAngle));
+                        }
+                        
+                        if(agentPos.y < screenHeight/2){
+                            agentPos.y += fabs(1 * sinf(offAngle));
+                        }
+                    
+                    
+                        
+                    
+                        
+                }
+                
+                /*
+                if(agentPos.x != screenWidth/2 || agentPos.y != screenHeight/2){
+                    durationDisplaced += .1;
+                    float offAngle = atanf( (agentPos.y - screenHeight/2) / (agentPos.x - screenWidth/2) );
+                       
+                       if(offAngle > 0){
+                            if(offAngle < 0){
+                                offAngle += 2*PI;
+                            }
+                        } else {
+                            offAngle += PI;
+                        }
+                    
+                    if(offRadius == 0.0){
+                        offRadius = sqrt(  pow((agentPos.x - screenWidth/2),2) + pow((agentPos.y - screenHeight/2),2)  );
+                    }
+                    
+                   
+                        //agentPos.x = (offRadius - 0.0001) * cosf(offAngle);
+                    
+                   //     agentPos.y = (offRadius - 0.0001) * sinf(offAngle);
+
+                    
                     
                     if(agentPos.x > screenWidth/2){
-                        agentPos.x -= 1;
+                        agentPos.x -= (motion(40, offRadius, .5, 40, durationDisplaced)) * cosf(offAngle);
                     }
                     if(agentPos.x < screenWidth/2){
-                        agentPos.x += 1;
+                        agentPos.x += (motion(40, offRadius, .5, 40, durationDisplaced)) * cosf(offAngle);
                     }
                     
                     if(agentPos.y > screenHeight/2){
-                        agentPos.y -= 1;
+                        agentPos.y -= (motion(40, offRadius, .5, 40, durationDisplaced)) * sinf(offAngle);
                     }
                     
                     if(agentPos.y < screenHeight/2){
-                        agentPos.y += 1;
+                        agentPos.y += (motion(40, offRadius, .5, 40, durationDisplaced)) * sinf(offAngle);
                     }
-                        
+
+                    //returnSpeed += 0.05;
+                    
+                    
+                } else {
+                    offRadius = 0.0;
                 }
+                */
                 
                 
                  
