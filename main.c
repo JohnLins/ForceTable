@@ -4,12 +4,11 @@
 #include <string.h>
 
 #define R 400
-/*
+
 float motion(float m, float a, float b, float w, float x){
-    //return (*a)*exp((-1*(*b)*(*x))/(2*(*m)))   *  cosf(sqrt( pow((2*PI)/(*a), 2) - pow((*b)/(4*(*m)), 2) ) * (*x));
-    return (a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x));
+    return ((a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x))); 
 } //a is equal to the displaced radius
-*/
+
 
 typedef struct Weight {
     float mass;
@@ -17,16 +16,22 @@ typedef struct Weight {
 } Weight;
 
 void update(Weight *weights)
-{
-   
+{  
     for(int i = 0; i < 3; i++){
+        char term;
+        
         printf("Mass of weight %d (Grams): ", i+1);
-        scanf("%f", &weights[i].mass);
+        if(scanf("%f%c", &weights[i].mass, &term) != 2 || term != '\n'){
+            printf("invalid\n");
+        }
+        
         printf("Angle of weight %d (Degrees) : ", i+1);
-        scanf("%f", &weights[i].theta);
+        if(scanf("%f%c", &weights[i].theta, &term) != 2 || term != '\n'){
+            printf("invalid\n");
+        }
+        
         weights[i].theta *= (-PI/180);
     }
-    
 }
 
 int main(void)
@@ -152,24 +157,33 @@ int main(void)
                
                 if(agentPos.x != screenWidth/2 || agentPos.y != screenHeight/2){
                      float offAngle = atanf( (agentPos.y - screenHeight/2) / (agentPos.x - screenWidth/2) );
+                     if(offRadius == 0.0){
+                        offRadius = sqrt(  pow((agentPos.x - screenWidth/2),2) + pow((agentPos.y - screenHeight/2),2)  );
+                        }
+                    durationDisplaced += 1;
+                   // printf("%f\n", motion(40, offRadius, .5, 40, durationDisplaced));
+                    
                     
                    
-                        if(agentPos.x > screenWidth/2){
-                            agentPos.x -= fabs(1 * cosf(offAngle));
+                       if(agentPos.x > screenWidth/2){
+                            agentPos.x -= fabs(5 * cosf(offAngle));
                         }
                         if(agentPos.x < screenWidth/2){
-                            agentPos.x += fabs(1 * cosf(offAngle));
+                            agentPos.x += fabs(5 * cosf(offAngle));
                         }
                         
                         if(agentPos.y > screenHeight/2){
-                            agentPos.y -= fabs(1 * sinf(offAngle));
+                            agentPos.y -= fabs(5 * sinf(offAngle));
                         }
                         
                         if(agentPos.y < screenHeight/2){
-                            agentPos.y += fabs(1 * sinf(offAngle));
+                            agentPos.y += fabs(5 * sinf(offAngle));
                         }
+                        
+                        
+                        //printf("%f\n", motion(40, offRadius, .5, 2*PI, durationDisplaced));
                     
-                    
+                      
                         
                     
                         
