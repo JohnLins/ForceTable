@@ -37,21 +37,7 @@ bool update(Weight *weights)
     return true;
 }
 
-int main(void)
-{
-    const int screenWidth = 1000;
-    const int screenHeight = 1000;
-    
-    Weight weights[4] = {};
-  
-    
-    bool inputSuccess = update(weights);
-    if(inputSuccess != true){
-        printf("Please relaunch the program");
-        CloseWindow();  
-    }
-    
-    
+void calculateFourth(Weight *weights){
     float xTotal = 0.0;
     float yTotal = 0.0;
     for(int i = 0; i < 3; i++)
@@ -85,7 +71,25 @@ int main(void)
     
     printf("R mass: %f \n", weights[3].mass);
     printf("R theta: %f \n", weights[3].theta);
+}
+
+int main(void)
+{
+    const int screenWidth = 1000;
+    const int screenHeight = 1000;
     
+    Weight weights[4] = {};
+  
+    
+    bool inputSuccess = update(weights);
+    if(inputSuccess != true){
+        printf("Please relaunch the program");
+        CloseWindow();  
+    }
+    
+    
+    
+    calculateFourth(weights);
 
     
    
@@ -115,10 +119,13 @@ int main(void)
         
          if(IsKeyDown(KEY_UP)){
              bool inputSuccess = update(weights);
+             
              if(inputSuccess != true){
                  printf("Please relaunch the program");
                  CloseWindow();  
              }
+             
+             calculateFourth(weights);
           }
         
         
