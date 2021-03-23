@@ -48,6 +48,7 @@ int main(void)
     bool inputSuccess = update(weights);
     if(inputSuccess != true){
         printf("Please relaunch the program");
+        CloseWindow();  
     }
     
     
@@ -116,6 +117,7 @@ int main(void)
              bool inputSuccess = update(weights);
              if(inputSuccess != true){
                  printf("Please relaunch the program");
+                 CloseWindow();  
              }
           }
         
