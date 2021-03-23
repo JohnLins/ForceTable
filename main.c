@@ -15,7 +15,7 @@ typedef struct Weight {
     float theta;
 } Weight;
 
-void update(Weight *weights)
+bool update(Weight *weights)
 {  
     for(int i = 0; i < 3; i++){
         char term;
@@ -23,15 +23,18 @@ void update(Weight *weights)
         printf("Mass of weight %d (Grams): ", i+1);
         if(scanf("%f%c", &weights[i].mass, &term) != 2 || term != '\n'){
             printf("invalid\n");
+            return false;
         }
         
         printf("Angle of weight %d (Degrees) : ", i+1);
         if(scanf("%f%c", &weights[i].theta, &term) != 2 || term != '\n'){
             printf("invalid\n");
+            return false;
         }
         
         weights[i].theta *= (-PI/180);
     }
+    return true;
 }
 
 int main(void)
@@ -42,7 +45,10 @@ int main(void)
     Weight weights[4] = {};
   
     
-    update(weights);
+    bool inputSuccess = update(weights);
+    if(inputSuccess != true){
+        printf("Please relaunch the program");
+    }
     
     
     float xTotal = 0.0;
@@ -107,7 +113,10 @@ int main(void)
     {
         
          if(IsKeyDown(KEY_UP)){
-             update(weights);
+             bool inputSuccess = update(weights);
+             if(inputSuccess != true){
+                 printf("Please relaunch the program");
+             }
           }
         
         
