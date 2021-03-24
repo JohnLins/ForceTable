@@ -1,13 +1,11 @@
 #include "raylib.h"
+//Credit: I am using the Raylib.com C Library 
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 
 #define R 400
 
-float motion(float m, float a, float b, float w, float x){
-    return ((a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x))); 
-} //a is equal to the displaced radius
 
 
 typedef struct Weight {
@@ -15,6 +13,7 @@ typedef struct Weight {
     float theta;
 } Weight;
 
+//Function to get user input
 bool update(Weight *weights)
 {  
     for(int i = 0; i < 3; i++){
@@ -37,6 +36,7 @@ bool update(Weight *weights)
     return true;
 }
 
+//Function to compute the 4th weight values
 void calculateFourth(Weight *weights){
     float xTotal = 0.0;
     float yTotal = 0.0;
@@ -113,6 +113,7 @@ int main(void)
     float durationDisplaced = 0.0;
     float offRadius = 0.0;
 
+	//Game loop
     SetTargetFPS(60);  
     while (!WindowShouldClose())    
     {
@@ -166,6 +167,7 @@ int main(void)
                     if(i != 3){
                         DrawCircleV((Vector2){ R*cosf(weights[i].theta) + screenWidth/2, R*sinf(weights[i].theta) + screenHeight/2}, weights[i].mass/sizeRatio, BLACK);
                     }
+
                     DrawText(thetaDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 - 40), 20, RED);
                     DrawText(massDisplay, (R*cosf(weights[i].theta) + screenWidth/2),  (R*sinf(weights[i].theta) + screenHeight/2 + 40), 20, BLUE);
                     
@@ -179,7 +181,7 @@ int main(void)
                         offRadius = sqrt(  pow((agentPos.x - screenWidth/2),2) + pow((agentPos.y - screenHeight/2),2)  );
                         }
                     durationDisplaced += 1;
-                   // printf("%f\n", motion(40, offRadius, .5, 40, durationDisplaced));
+                  
                     
                     
                    
@@ -197,17 +199,21 @@ int main(void)
                         if(agentPos.y < screenHeight/2){
                             agentPos.y += fabs(5 * sinf(offAngle));
                         }
-                        
-                        
-                        //printf("%f\n", motion(40, offRadius, .5, 2*PI, durationDisplaced));
-                    
                       
-                        
-                    
                         
                 }
                 
                 /*
+
+				---
+				/*
+				float motion(float m, float a, float b, float w, float x){
+					    return ((a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x))); 
+					    } //a is equal to the displaced radius
+					    */
+				}
+				---
+
                 if(agentPos.x != screenWidth/2 || agentPos.y != screenHeight/2){
                     durationDisplaced += .1;
                     float offAngle = atanf( (agentPos.y - screenHeight/2) / (agentPos.x - screenWidth/2) );
