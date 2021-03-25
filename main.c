@@ -3,6 +3,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
+//^ standard libs credit
 
 #define R 400
 
@@ -14,18 +16,23 @@ typedef struct Weight {
 } Weight;
 
 //Function to get user input
-bool update(Weight *weights)
+bool update(Weight *weights, bool first)
 {  
+    char *new;
+    if(first == false){
+         new = "new ";
+    } else {new = "";}
+    
     for(int i = 0; i < 3; i++){
         char term;
         
-        printf("Mass of weight %d (Grams): ", i+1);
+        printf("Mass of %sweight #%d (Grams): ", new, i+1);
         if(scanf("%f%c", &weights[i].mass, &term) != 2 || term != '\n'){
             printf("invalid\n");
             return false;
         }
         
-        printf("Angle of weight %d (Degrees) : ", i+1);
+        printf("Angle of %sweight #%d (Degrees) : ", new, i+1);
         if(scanf("%f%c", &weights[i].theta, &term) != 2 || term != '\n'){
             printf("invalid\n");
             return false;
@@ -81,7 +88,7 @@ int main(void)
     Weight weights[4] = {};
   
     
-    bool inputSuccess = update(weights);
+    bool inputSuccess = update(weights, true);
     if(inputSuccess != true){
         printf("Please relaunch the program");
         CloseWindow();  
@@ -119,7 +126,7 @@ int main(void)
     {
         
          if(IsKeyDown(KEY_UP)){
-             bool inputSuccess = update(weights);
+             bool inputSuccess = update(weights, false);
              
              if(inputSuccess != true){
                  printf("Please relaunch the program");
@@ -206,11 +213,11 @@ int main(void)
                 /*
 
 				---
-				/*
+				
 				float motion(float m, float a, float b, float w, float x){
 					    return ((a) * exp((-(b)*(x))/(2*(m)))   *  cosf(sqrt(  pow((w), 2) - pow((b) / (4 * (m)), 2)  ) * (x))); 
 					    } //a is equal to the displaced radius
-					    */
+					    
 				}
 				---
 
